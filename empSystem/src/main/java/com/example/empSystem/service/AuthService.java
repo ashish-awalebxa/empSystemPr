@@ -45,10 +45,15 @@ public class AuthService {
         Role userRole = roleRepository.findByName("USER")
                 .orElseGet(() -> roleRepository.save(new Role("USER")));
 
+        Role employeeRole = roleRepository.findByName("EMPLOYEE")
+                .orElseGet(() -> roleRepository.save(new Role("EMPLOYEE")));
+
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+
         user.getRoles().add(userRole);
+        user.getRoles().add(employeeRole); // ✅ IMPORTANT
 
         User savedUser = userRepository.save(user);
 
@@ -59,6 +64,7 @@ public class AuthService {
 
         employeeRepository.save(employee);
     }
+
 
     public void login(String username, String password) {
 
